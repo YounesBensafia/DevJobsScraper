@@ -56,15 +56,18 @@ for job_element in job_elements:
         exit(1)
 
     try:
-        location_links = job_element.find_elements(
-            By.CSS_SELECTOR, "div.location a"
-        )
-        if not location_links:
-            location_links = job_element.find_elements(
-            By.CSS_SELECTOR, "div.location"
-            )
+        salary = []
+        location = []
 
-        location = [link.text.strip() for link in location_links if link.text.strip()]
+        divs = job_element.find_elements(By.CSS_SELECTOR, "div.location")
+
+        for div in divs:
+            content = div.get_attribute("textContent").strip()
+            if "💰" in content:
+                salary.append(content)
+            else:
+                location.append(content)
+
     except:
         print("Error extracting locations for job:", title)
         exit(1)
@@ -76,6 +79,7 @@ for job_element in job_elements:
             "company": company,
             "tags": tags,
             "locations": location if location else ["Not mentioned"],
+            "salary": salary if salary else ["Not mentioned"],
         }
     )
 
@@ -88,6 +92,7 @@ for i, job in enumerate(jobs, 1):
     print(
         f"   Locations: {', '.join(job['locations']) if job['locations'] else 'Not mentioned'}"
     )
+    print(f"   Salary: {', '.join(job['salary']) if job['salary'] else 'Not mentioned'}")
     print("-" * 50)
 
 driver.quit()
