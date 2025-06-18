@@ -72,6 +72,30 @@ for job_element in job_elements:
         print("Error extracting locations for job:", title)
         exit(1)
 
+    try:
+        link_element = job_element.find_element(By.CSS_SELECTOR, ".preventLink")
+        job_link = link_element.get_attribute("href")
+        link = job_link.strip()
+
+    except:
+        print("Error extracting job link for job:", title)
+        exit(1)
+
+    try:
+        logo_element = job_element.find_element(By.CSS_SELECTOR, ".logo")
+
+        logo = logo_element.get_attribute("data-src")
+
+        if logo and logo.startswith("/"):
+            logo = "https://remoteok.com" + logo
+
+        if not logo:
+            logo = "Not mentioned"
+
+    except:
+        print("Error extracting job logo for job:", title)
+        logo = "Not mentioned"
+
     jobs.append(
         {
             "title": title,
@@ -80,6 +104,8 @@ for job_element in job_elements:
             "tags": tags,
             "locations": location if location else ["Not mentioned"],
             "salary": salary if salary else ["Not mentioned"],
+            "link": link if link else "Not mentioned",
+            "logo": logo,
         }
     )
 
@@ -90,9 +116,14 @@ for i, job in enumerate(jobs, 1):
     print(f"   Company: {job['company']}")
     print(f"   Tags: {', '.join(job['tags']) if job['tags'] else 'Not mentioned'}")
     print(
-        f"   Locations: {', '.join(job['locations']) if job['locations'] else 'Not mentioned'}"
+        f"   Apply if you are   : {', '.join(job['locations']) if job['locations'] else 'Not mentioned'}"
     )
-    print(f"   Salary: {', '.join(job['salary']) if job['salary'] else 'Not mentioned'}")
+    print(
+        f"   Salary: {', '.join(job['salary']) if job['salary'] else 'Not mentioned'}"
+    )
+    print(f"   Link: {job['link']}")
+    print(f"   Logo: {job['logo']}")
     print("-" * 50)
+
 
 driver.quit()
