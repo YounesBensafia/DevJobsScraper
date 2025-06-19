@@ -1,9 +1,16 @@
 from fastapi import FastAPI
-from backend.database import get_jobs  # must match your folder structure
+import sqlite3
 
 app = FastAPI()
 
+DB_PATH = "data/jobs.db"
+
 @app.get("/jobs")
-async def read_jobs():
-    jobs = await get_jobs()
-    return {"jobs": jobs}
+def get_all_jobs():
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM jobs")
+    rows = cursor.fetchall()
+    conn.close()
+    return [dict(row) for row in rows]
