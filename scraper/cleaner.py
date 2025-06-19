@@ -10,7 +10,7 @@ def connect_db(db_path="data/jobs.db"):
 
 def normalize_tags(tags):
     if not tags:
-        return None
+        return "not mentioned"
     return ", ".join(tag.strip().lower() for tag in tags.split(","))
 
 
@@ -35,17 +35,19 @@ def extract_salary_parts(raw_salary):
 def clean_jobs():
     conn = connect_db()
     cursor = conn.cursor()
-
-    cursor.execute(
+    try: 
+        cursor.execute(
+            """
+            DELETE FROM jobs
+            WHERE rowid NOT IN (
+                SELECT MIN(rowid)
+                FROM jobs
+                GROUP BY title, company, time, tags, locations, salary, link, logo
+            );
         """
-        DELETE FROM jobs
-        WHERE rowid NOT IN (
-            SELECT MIN(rowid)
-            FROM jobs
-            GROUP BY title, company, time, tags, locations, salary, link, logo
-        );
-    """
-    )
+        )
+    except sqlite3.OperationalError:
+        pass
 
     cursor.execute("SELECT rowid, tags FROM jobs")
     for rowid, tags in cursor.fetchall():
@@ -72,14 +74,16 @@ def clean_jobs():
         cursor.execute("ALTER TABLE jobs ADD COLUMN currency TEXT;")
     except sqlite3.OperationalError:
         pass
-
-    cursor.execute("SELECT rowid, salary FROM jobs")
-    for rowid, raw_salary in cursor.fetchall():
-        salary_from, salary_to, currency = extract_salary_parts(raw_salary)
-        cursor.execute(
-            "UPDATE jobs SET salary_from = ?, salary_to = ?, currency = ? WHERE rowid = ?",
-            (salary_from, salary_to, currency, rowid),
-        )
+    try:
+        cursor.execute("SELECT rowid, salary FROM jobs")
+        for rowid, raw_salary in cursor.fetchall():
+            salary_from, salary_to, currency = extract_salary_parts(raw_salary)
+            cursor.execute(
+                "UPDATE jobs SET salary_from = ?, salary_to = ?, currency = ? WHERE rowid = ?",
+                (salary_from, salary_to, currency, rowid),
+            )
+    except sqlite3.OperationalError:
+        pass
 
     cursor.execute(
         """
