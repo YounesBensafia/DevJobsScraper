@@ -37,3 +37,4 @@ coverage.xml
 
 scraper/__pycache__/
 backend/__pycache__/
+frontend/node_modules
