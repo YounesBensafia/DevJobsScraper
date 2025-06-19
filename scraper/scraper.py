@@ -5,11 +5,13 @@ import time
 import sqlite3
 import pandas as pd
 
+
 def save_to_db(jobs: list):
     df = pd.DataFrame(jobs)
     conn = sqlite3.connect("data/jobs.db")
     df.to_sql("jobs", conn, if_exists="replace", index=False)
     conn.close()
+
 
 options = Options()
 options.add_argument("--headless")
@@ -25,6 +27,7 @@ driver.get(url)
 
 time.sleep(5)
 
+
 def scraper(driver):
     job_elements = driver.find_elements(By.CSS_SELECTOR, "tr.job")
     jobs = []
@@ -32,8 +35,8 @@ def scraper(driver):
     for job_element in job_elements:
         try:
             title_element = job_element.find_element(
-            By.CSS_SELECTOR, "h2[itemprop='title']"
-        )
+                By.CSS_SELECTOR, "h2[itemprop='title']"
+            )
             title = title_element.text.strip()
         except:
             title = job_element.text.strip()
@@ -46,8 +49,8 @@ def scraper(driver):
 
         try:
             company_element = job_element.find_element(
-            By.CSS_SELECTOR, "h3[itemprop='name']"
-        )
+                By.CSS_SELECTOR, "h3[itemprop='name']"
+            )
             company = company_element.text.strip()
         except:
             company = "N/A"
@@ -106,39 +109,21 @@ def scraper(driver):
             logo = "Not mentioned"
 
         jobs.append(
-        {
-            "title": title,
-            "time": posted,
-            "company": company,
-            "tags": ", ".join(tags),
-            "locations": ", ".join(location) if location else "Not mentioned",
-            "salary": ", ".join(salary) if salary else "Not mentioned",
-            "link": link if link else "Not mentioned",
-            "logo": logo,
-        }
+            {
+                "title": title,
+                "time": posted,
+                "company": company,
+                "tags": ", ".join(tags),
+                "locations": ", ".join(location) if location else "Not mentioned",
+                "salary": ", ".join(salary) if salary else "Not mentioned",
+                "link": link if link else "Not mentioned",
+                "logo": logo,
+            }
         )
-
-    # print(f"Found {len(jobs)} jobs:")
-    # for i, job in enumerate(jobs, 1):
-    #     print(f"{i}. Title: {job['title']}")
-    #     print(f"   Posted: {job['time']}")
-    #     print(f"   Company: {job['company']}")
-    #     print(f"   Tags: {', '.join(job['tags']) if job['tags'] else 'Not mentioned'}")
-    #     print(
-    #     f"   Apply if you are   : {', '.join(job['locations']) if job['locations'] else 'Not mentioned'}"
-    # )
-    #     print(
-    #     f"   Salary: {', '.join(job['salary']) if job['salary'] else 'Not mentioned'}"
-    # )
-    #     print(f"   Link: {job['link']}")
-    #     print(f"   Logo: {job['logo']}")
-    #     print("-" * 50)
-
-
     driver.quit()
     return jobs
+
 
 if __name__ == "__main__":
     jobs = scraper(driver)
     save_to_db(jobs)
-
