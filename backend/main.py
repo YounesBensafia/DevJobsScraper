@@ -1,12 +1,13 @@
 from fastapi import FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
 import sqlite3
+import os
 
 app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://192.168.100.5:3000"],
+    allow_origins=os.environ.get("ALLOWED_ORIGINS", "").split(","),
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

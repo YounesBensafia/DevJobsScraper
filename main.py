@@ -1,10 +1,20 @@
+import time
 from scraper.scraper import main_scraper
 from scraper.cleaner import main_cleaner
 
-if __name__ == "__main__":
-    print("Starting the job scraping process...")
-    main_scraper()
-    print("Job scraping completed. Now cleaning the data...")
-    main_cleaner()
-    print("Data cleaning completed. Process finished successfully.")
+def run_every(interval_seconds: int = 60):
+    while True:
+        print("🔄 Starting the job scraping process...")
+        try:
+            main_scraper()
+            print("✅ Job scraping completed. Now cleaning the data...")
+            main_cleaner()
+            print("✅ Data cleaning completed. Process finished successfully.")
+        except Exception as e:
+            print(f"❌ Error during scheduled task: {e}")
+        
+        print(f"⏳ Waiting {interval_seconds} seconds...\n")
+        time.sleep(interval_seconds)
 
+if __name__ == "__main__":
+    run_every(60)  

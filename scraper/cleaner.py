@@ -1,5 +1,3 @@
-# scraping/cleaner.py
-
 import sqlite3
 import re
 
