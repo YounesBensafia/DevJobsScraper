@@ -124,6 +124,6 @@ def scraper(driver):
     return jobs
 
 
-if __name__ == "__main__":
+def main_scraper():
     jobs = scraper(driver)
     save_to_db(jobs)

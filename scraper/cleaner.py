@@ -118,5 +118,5 @@ def clean_jobs():
     print("✅ Jobs cleaned successfully.")
 
 
-if __name__ == "__main__":
+def main_cleaner():
     clean_jobs()
