@@ -118,3 +118,6 @@ def clean_jobs():
 
 def main_cleaner():
     clean_jobs()
+
+if __name__ == "__main__":
+    main_cleaner()
