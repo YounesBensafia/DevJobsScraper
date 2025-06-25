@@ -15,20 +15,23 @@ def save_to_db(jobs: list):
     conn.close()
 
 
-options = Options()
-options.add_argument("--headless")
-options.add_argument("--disable-gpu")
-options.add_argument("--no-sandbox")
-options.add_argument("--disable-dev-shm-usage")
-options.add_argument("--window-size=1920,1080")
+def driver():
+    options = Options()
+    options.add_argument("--headless")
+    options.add_argument("--disable-gpu")
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
+    options.add_argument("--window-size=1920,1080")
 
-service = Service(ChromeDriverManager().install())
-driver = webdriver.Chrome(service=service, options=options)
+    service = Service(ChromeDriverManager().install())
+    driver = webdriver.Chrome(service=service, options=options)
 
-url = "https://remoteok.com/remote-dev-jobs"
-driver.get(url)
+    url = "https://remoteok.com/remote-dev-jobs"
+    driver.get(url)
 
-time.sleep(5)
+    time.sleep(5)
+    return driver
+
 
 
 def scraper(driver):
@@ -68,8 +71,7 @@ def scraper(driver):
                 tags.extend([h3.text.strip() for h3 in h3s if h3.text.strip()])
         except:
             print("Error extracting tags for job:", title)
-            exit(1)
-
+            continue
         try:
             salary = []
             location = []
@@ -85,8 +87,8 @@ def scraper(driver):
 
         except:
             print("Error extracting locations for job:", title)
-            exit(1)
-
+            salary = ["Not mentioned"]
+            location = ["Not mentioned"]
         try:
             link_element = job_element.find_element(By.CSS_SELECTOR, ".preventLink")
             job_link = link_element.get_attribute("href")
@@ -94,7 +96,8 @@ def scraper(driver):
 
         except:
             print("Error extracting job link for job:", title)
-            exit(1)
+            link = "Not mentioned"
+            continue
 
         try:
             logo_element = job_element.find_element(By.CSS_SELECTOR, ".logo")
@@ -119,14 +122,16 @@ def scraper(driver):
                 "tags": ", ".join(tags),
                 "locations": ", ".join(location) if location else "Not mentioned",
                 "salary": ", ".join(salary) if salary else "Not mentioned",
-                "link": link if link else "Not mentioned",
-                "logo": logo,
-            }
+            "link": link if link else "Not mentioned",
+            "logo": logo,
+        }
         )
+    
     driver.quit()
     return jobs
 
 
 def main_scraper():
-    jobs = scraper(driver)
+    driver_instance = driver()
+    jobs = scraper(driver_instance)
     save_to_db(jobs)
