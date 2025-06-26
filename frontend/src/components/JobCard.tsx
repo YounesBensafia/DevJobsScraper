@@ -21,7 +21,7 @@ export default function JobCard({ job }: Props) {
           <img
             src={job.logo}
             alt={`${job.company} logo`}
-            className="w-14 h-14 object-contain rounded-md border border-gray-100 bg-gray-50 p-1"
+            className="w-14 h-14 object-contain rounded-md border border-gray-100 bg-gray-50 p-1 text-black text-[10px]"
           />
         )}
       </div>
