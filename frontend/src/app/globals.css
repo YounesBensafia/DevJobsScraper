@@ -14,8 +14,11 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #c07171;
+    --foreground: #f5f5f5;
+    --accent: #4e9af1;
+    --card-bg: #1e1e1e;
+    --border: #2c2c2c;
   }
 }
 
