@@ -93,7 +93,7 @@ export default function JobCard({ job }: Props) {
           href={job.link}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-md text-white bg-[#5644E6] border-2 border-black hover:bg-blue-300 hover:text-black px-4 py-2 ring-1 shadow-orange-400 rounded-full font-bold transition-all"
+          className="text-md text-white bg-[#5644E6] border-2 border-black hover:bg-blue-300 hover:text-black px-4 py-2 shadow-orange-400 rounded-full font-bold transition-all"
         >
           Voir l'offre →
         </a>
