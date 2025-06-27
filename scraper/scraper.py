@@ -135,3 +135,7 @@ def main_scraper():
     driver_instance = driver()
     jobs = scraper(driver_instance)
     save_to_db(jobs)
+
+if __name__ == "__main__":
+    main_scraper()
+    print("Scraping completed and data saved to database.")

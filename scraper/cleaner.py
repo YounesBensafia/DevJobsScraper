@@ -9,7 +9,7 @@ def connect_db(db_path="data/jobs.db"):
 def normalize_tags(tags):
     if not tags:
         return "not mentioned"
-    return ", ".join(tag.strip().lower() for tag in tags.split(","))
+    return ", ".join(tag.strip() for tag in tags.split(","))
 
 
 def extract_salary_parts(raw_salary):
@@ -54,15 +54,15 @@ def clean_jobs():
             "UPDATE jobs SET tags = ? WHERE rowid = ?", (cleaned_tags, rowid)
         )
 
-    fields = ["title", "company", "locations"]
-    for field in fields:
-        cursor.execute(
-            f"""
-            UPDATE jobs
-            SET {field} = TRIM(LOWER({field}))
-            WHERE {field} IS NOT NULL;
-        """
-        )
+    # fields = ["title", "company", "locations"]
+    # for field in fields:
+    #     cursor.execute(
+    #         f"""
+    #         UPDATE jobs
+    #         SET {field} = TRIM(LOWER({field}))
+    #         WHERE {field} IS NOT NULL;
+    #     """
+    #     )
 
     cursor.execute("DELETE FROM jobs WHERE time LIKE '%1yr%'")
 

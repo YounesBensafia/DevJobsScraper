@@ -22,32 +22,31 @@ export default function JobCard({ job }: Props) {
       <div className="flex items-start justify-between gap-4">
         <div className="flex-1">
           <h2 className="text-2xl font-semibold text-gray-900">{job.title}</h2>
-          <p className="mt-1 text-sm text-gray-500">
-            {job.company} ·{" "}
-            <span className="text-gray-400 break-words whitespace-normal">
-              {displayedLocations}
-              {locationsArray.length > 4 && !showAll && (
-                <button
-                  onClick={() => setShowAll(true)}
-                  className="text-blue-500 hover:underline ml-1"
-                >
-                  Voir plus
-                </button>
-              )}
-              {locationsArray.length > 4 && showAll && (
-                <button
-                  onClick={() => setShowAll(false)}
-                  className="text-blue-500 hover:underline ml-1"
-                >
-                  Voir moins
-                </button>
-              )}
-            </span>
+          <p className="mt-1 text-xl text-[#6D65C6] font-bold ">
+            {job.company}
           </p>
+          <span className="text-gray-400 text-sm break-words whitespace-normal">
+            {displayedLocations}
+            {locationsArray.length > 4 && !showAll && (
+              <button
+                onClick={() => setShowAll(true)}
+                className="text-blue-500 hover:underline ml-1"
+              >
+                Voir plus
+              </button>
+            )}
+            {locationsArray.length > 4 && showAll && (
+              <button
+                onClick={() => setShowAll(false)}
+                className="text-blue-500 hover:underline ml-1"
+              >
+                Voir moins
+              </button>
+            )}
+          </span>
         </div>
 
-        {/* Logo or fallback SVG */}
-        <div className="w-16 h-16 flex items-center justify-center bg-gray-50 border border-gray-100 rounded-xl p-2">
+        <div className="w-16 h-full rounded-xl flex items-center justify-center bg-[#6D65C6] border border-black p-2">
           {!logoError && job.logo ? (
             <img
               src={job.logo}
