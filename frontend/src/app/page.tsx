@@ -6,7 +6,7 @@ export default function Home() {
     <main className="p-6">
       {/* <h1 className="text-5xl font-bold mb-6 flex justify-center text-black">Remote jobs offers in Dev</h1> */}
       {/* <Filter /> */}
-      <JobList />
+      {/* <JobList /> */}
     </main>
   );
 }

@@ -27,8 +27,8 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white dark:bg-slate-900`}
         style={{
-          backgroundImage: `url("/background.svg")`,
-          backgroundAttachment: 'fixed'
+          backgroundImage: 'url("/background.svg")',
+          backgroundAttachment: "fixed",
         }}
       >
         {children}

@@ -11,6 +11,9 @@ export default function JobCard({ job }: Props) {
   const [showAll, setShowAll] = useState(false);
   const [logoError, setLogoError] = useState(false);
   const locationsArray = job.locations.split(",");
+  const formatter = new Intl.NumberFormat("en-US"); // ou 'fr-FR'
+  const salaryFromFormatted = formatter.format(Number(job.salary_from));
+  const salaryToFormatted = formatter.format(Number(job.salary_to));
 
   const displayedLocations = showAll
     ? job.locations
@@ -33,7 +36,7 @@ export default function JobCard({ job }: Props) {
           <p className="mt-1 text-xl text-[#6D65C6] font-bold ">
             {job.company}
           </p>
-          <span className="text-gray-400 font-bold text-[15px] break-words whitespace-normal">
+          <div className="text-gray-400 font-bold text-[15px] break-words whitespace-normal">
             {displayedLocations}
             {locationsArray.length > 4 && !showAll && (
               <button
@@ -51,7 +54,7 @@ export default function JobCard({ job }: Props) {
                 Voir moins
               </button>
             )}
-          </span>
+          </div>
         </div>
 
         <div className="w-16 h-full rounded-xl flex items-center justify-center bg-[#6D65C6] border border-black p-2">
@@ -83,8 +86,8 @@ export default function JobCard({ job }: Props) {
       {job.salary_from && job.salary_to && (
         <p className="mt-2 text-xl text-[#09A372] font-semibold">
           {job.currency}
-          {Number(job.salary_from).toLocaleString()} - {job.currency}
-          {Number(job.salary_to).toLocaleString()}
+          {salaryFromFormatted} - {job.currency}
+          {salaryToFormatted}
         </p>
       )}
 
