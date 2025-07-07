@@ -23,14 +23,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning={true}>
+    <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white dark:bg-slate-900`}
         style={{
           backgroundImage: 'url("/background.svg")',
           backgroundAttachment: "fixed",
         }}
+        suppressHydrationWarning
       >
+
         {children}
       </body>
     </html>
