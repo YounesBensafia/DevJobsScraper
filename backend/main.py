@@ -2,12 +2,46 @@ from fastapi import FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
 import sqlite3
 import os
+import asyncio
 from dotenv import load_dotenv
-load_dotenv()
-app = FastAPI()
+from contextlib import asynccontextmanager
 
+from scraper.scraper import main_scraper
+from scraper.cleaner import main_cleaner
+
+load_dotenv()
+
+DB_PATH = "data/jobs.db"
 origins = os.getenv("ALLOWED_ORIGINS", "").split(",")
-print("Allowed Origins:", origins) 
+
+
+async def run_scraper_loop(interval_seconds: int = 60):
+    while True:
+        print("🔄 Starting the job scraping process...")
+        try:
+            main_scraper()
+            print("✅ Job scraping completed. Now cleaning the data...")
+            main_cleaner()
+            print("✅ Data cleaning completed. Process finished successfully.")
+        except Exception as e:
+            print(f"❌ Error during scheduled task: {e}")
+
+        print(f"⏳ Waiting {interval_seconds} seconds...\n")
+        await asyncio.sleep(interval_seconds)
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    task = asyncio.create_task(run_scraper_loop(60))
+    yield
+    task.cancel()
+    try:
+        await task
+    except asyncio.CancelledError:
+        print("🛑 Background task cancelled.")
+
+
+app = FastAPI(lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
@@ -17,22 +51,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-DB_PATH = "data/jobs.db"
-
 
 @app.get("/")
-# def get_jobs(limit: int = Query(20, le=100), offset: int = 0):
 def get_jobs():
-
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
-    # cursor.execute(
-    #     "SELECT * FROM jobs ORDER BY id ASC LIMIT ? OFFSET ?", (limit, offset)
-    # )
-    cursor.execute(
-        "SELECT * FROM jobs ORDER BY id ASC",
-    )
+    cursor.execute("SELECT * FROM jobs ORDER BY id ASC")
     rows = cursor.fetchall()
     conn.close()
     return [dict(row) for row in rows]
