@@ -1,24 +1,29 @@
+"use client";
 import JobList from "@/components/JobList";
 import Filter from "@/components/Filter";
+import SplitText from "@/components/react_bits/SplitText";
 
 export default function Home() {
+  const handleAnimationComplete = () => {
+    console.log("All letters have animated!");
+  };
   return (
-    <main className="p-4">
-      <div className="relative bg-black py-16 px-6 sm:px-12 lg:px-24 mb-8 border-3 rounded-2xl shadow-lg">
-        <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-gray-900 dark:text-white mb-6">
-            Discover Remote{" "}
-            <span className="text-blue-600 dark:text-blue-400">Developer</span>{" "}
-            Opportunities
-          </h1>
-          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            Find your next career move — wherever you are. Browse fully remote
-            jobs in frontend, backend, and full-stack development.
-          </p>
-        </div>
-      </div>
-
-      {/* <Filter /> */}
+    <main className="pl-4 pr-4">
+      <SplitText
+        text="Hello in JobHunter!"
+        className="text-3xl italic text-black w-full text-center font-bold mb-8 mt-8 md:text-8xl"
+        delay={100}
+        duration={0.6}
+        ease="power3.out"
+        splitType="chars"
+        from={{ opacity: 0, y: 40 }}
+        to={{ opacity: 1, y: 0 }}
+        rootMargin="-100px"
+        textAlign="center"
+        threshold={0.1}
+        
+        onLetterAnimationComplete={handleAnimationComplete}
+      />
       <JobList />
     </main>
   );
