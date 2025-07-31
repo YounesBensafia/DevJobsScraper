@@ -8,12 +8,15 @@ from contextlib import asynccontextmanager
 
 from scraper.scraper import main_scraper
 from scraper.cleaner import main_cleaner
+from pathlib import Path
+
 
 load_dotenv()
 
 DB_PATH = "data/jobs.db"
+env_path = Path(__file__).resolve().parent.parent / '.env'
+load_dotenv(dotenv_path=env_path)
 origins = os.getenv("ALLOWED_ORIGINS", "").split(",")
-
 
 async def run_scraper_loop(interval_seconds: int = 60):
     while True:

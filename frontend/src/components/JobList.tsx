@@ -5,6 +5,8 @@ import JobCard from "./JobCard";
 import { Job } from "@/types/job";
 
 export default function JobList() {
+  const NEXT_PUBLIC_API_URL = "http://0.0.0.0:8000/";
+
   const [jobs, setJobs] = useState<Job[]>([]);
 
   useEffect(() => {
