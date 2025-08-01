@@ -3,15 +3,14 @@
 import { useEffect, useState } from "react";
 import JobCard from "./JobCard";
 import { Job } from "@/types/job";
+import NEXT_PUBLIC_API_URL from "@/config/index";
 
 export default function JobList() {
-  const NEXT_PUBLIC_API_URL = "http://0.0.0.0:8000/";
-
   const [jobs, setJobs] = useState<Job[]>([]);
+  console.log("NEXT_PUBLIC_API_URL", NEXT_PUBLIC_API_URL);
 
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}`
-)
+    fetch(`${NEXT_PUBLIC_API_URL}`)
       .then((res) => res.json())
       .then((data) => setJobs(data));
   }, []);
