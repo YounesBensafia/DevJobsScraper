@@ -1,5 +1,8 @@
 # DevJobsScraper
 
+<img width="1849" height="986" alt="image" src="https://github.com/user-attachments/assets/595d9d2a-8999-4bbb-837e-e8d25920e017" />
+
+
 ## Project Description
 
 DevJobsScraper is a web scraping project designed to collect and process job listings from various online sources. The project aims to provide a comprehensive and up-to-date database of job openings, making it easier for job seekers to find relevant opportunities.
