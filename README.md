@@ -1,6 +1,6 @@
 # DevJobsScraper
 
-<img width="1849" height="986" alt="image" src="https://github.com/user-attachments/assets/595d9d2a-8999-4bbb-837e-e8d25920e017" />
+<img width="1820" height="986" alt="image" src="https://github.com/user-attachments/assets/ebfa0c6d-1373-4110-9884-66ff9c31f0a7" />
 
 
 ## Project Description
