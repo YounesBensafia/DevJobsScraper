@@ -1,3 +1,5 @@
+# src/backend/main.py
+
 from fastapi import FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
 import sqlite3
@@ -5,9 +7,8 @@ import os
 import asyncio
 from dotenv import load_dotenv
 from contextlib import asynccontextmanager
-
-from scraper.scraper import main_scraper
-from scraper.cleaner import main_cleaner
+from src.scraper.scraper import main_scraper
+from src.scraper.cleaner import main_cleaner
 from pathlib import Path
 
 

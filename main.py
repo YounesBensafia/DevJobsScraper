@@ -1,6 +1,6 @@
 import time
-from scraper.scraper import main_scraper
-from scraper.cleaner import main_cleaner
+from src.scraper.scraper import main_scraper
+from src.scraper.cleaner import main_cleaner
 
 
 def run_every(interval_seconds: int = 60):
