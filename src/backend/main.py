@@ -14,7 +14,7 @@ from pathlib import Path
 
 load_dotenv()
 
-DB_PATH = "data/jobs.db"
+DB_PATH = "src/data/jobs.db"
 env_path = Path(__file__).resolve().parent.parent / '.env'
 load_dotenv(dotenv_path=env_path)
 origins = os.getenv("ALLOWED_ORIGINS", "").split(",")

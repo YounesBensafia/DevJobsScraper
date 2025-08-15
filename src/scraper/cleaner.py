@@ -2,7 +2,7 @@ import sqlite3
 import re
 
 
-def connect_db(db_path="data/jobs.db"):
+def connect_db(db_path="src/data/jobs.db"):
     return sqlite3.connect(db_path)
 
 

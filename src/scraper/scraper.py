@@ -6,11 +6,16 @@ from selenium.webdriver.common.by import By
 import time
 import sqlite3
 import pandas as pd
+import sys
+import os
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+from src.config.config import DB_PATH
 
 
 def save_to_db(jobs: list):
     df = pd.DataFrame(jobs)
-    conn = sqlite3.connect("data/jobs.db")
+    conn = sqlite3.connect(DB_PATH)
     df.to_sql("jobs", conn, if_exists="replace", index=False)
     conn.close()
 
@@ -139,7 +144,3 @@ def main_scraper():
     driver_instance = driver()
     jobs = scraper(driver_instance)
     save_to_db(jobs)
-
-if __name__ == "__main__":
-    main_scraper()
-    print("Scraping completed and data saved to database.")

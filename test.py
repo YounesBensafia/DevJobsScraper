@@ -2,7 +2,7 @@ import sqlite3
 
 
 def view_jobs():
-    conn = sqlite3.connect("data/jobs.db")
+    conn = sqlite3.connect("src/data/jobs.db")
     cursor = conn.cursor()
 
     try:
