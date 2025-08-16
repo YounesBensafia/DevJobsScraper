@@ -8,6 +8,7 @@ from selenium.webdriver.chrome.options import Options
 from config.config import WEBSITE_URL
 import time
 from src.scraper.scraping import scrape_jobs
+import sqlite3
 
 chrome_options = Options()
 chrome_options.add_argument("--headless")
@@ -27,20 +28,21 @@ def scrape_emploitic(route: str):
     driver.get(full_url)
     
     time.sleep(3)
-    try:
-        return(scrape_jobs(driver))
-
-    except Exception as e:
-        print(f"Error getting page content: {e}")
-        return None
-    
+    return(scrape_jobs(driver))
 
 if __name__ == "__main__":
+    try:
+        connection = sqlite3.connect("src/data/jobs.db")
+    except sqlite3.Error as e:
+        print(f"Error connecting to database: {e}")
+        exit(1)
+    print("hello from emploitic scraper")
     route = "?search=developer"
     jobs = scrape_emploitic(route)
     if jobs:
         for job in jobs:
             print(job.show())
+            job.save_to_db(connection)
         exit()
     else:
         print("No jobs found.")

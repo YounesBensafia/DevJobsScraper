@@ -13,32 +13,9 @@ def scrape_jobs(driver) -> list[Job]:
     jobs = []
 
     for i, element in enumerate(job_elements):
-            job_title = element.find_element(By.CLASS_NAME, "mui-1oymh71").text
-            job_company = element.find_element(By.CSS_SELECTOR, '[data-testid="jobs-item-company"]').text
-            job_link = element.find_element(By.CSS_SELECTOR, 'a').get_attribute('href') 
-            try:
-                location_container = element.find_element(By.XPATH, './/div[*[@data-testid="RoomRoundedIcon"]]')
-                if location_container:
-                    location_text = location_container.get_attribute('textContent').strip()
-                    if location_text:
-                        job_location = location_text
-                    else:
-                        job_location = "Algeria"
-            except Exception as loc_e:
-                job_location = "Algeria"
+            job_title, job_company, job_link, job_location = extract_job_details(element)
 
-            try:
-                date_posted_container = element.find_element(By.XPATH, './/div[*[@data-testid="TimelapseRoundedIcon"]]')
-                if date_posted_container:
-                    date_posted_text = date_posted_container.get_attribute('textContent').strip()
-                    if date_posted_text:
-                        job_date_posted = date_posted_text
-                    else:
-                        job_date_posted = "N/A"
-                else:
-                    job_date_posted = "N/A"
-            except Exception as loc_e:
-                job_date_posted = "N/A"
+            job_date_posted = extract_job_date_posted(element)
             job =Job(
                 title=job_title,
                 company=job_company,
@@ -49,4 +26,35 @@ def scrape_jobs(driver) -> list[Job]:
                     )
             jobs.append(job)
     return jobs
+
+def extract_job_date_posted(element):
+    try:
+        date_posted_container = element.find_element(By.XPATH, './/div[*[@data-testid="TimelapseRoundedIcon"]]')
+        if date_posted_container:
+            date_posted_text = date_posted_container.get_attribute('textContent').strip()
+            if date_posted_text:
+                job_date_posted = date_posted_text
+            else:
+                job_date_posted = "N/A"
+        else:
+            job_date_posted = "N/A"
+    except Exception as loc_e:
+        job_date_posted = "N/A"
+    return job_date_posted
+
+def extract_job_details(element):
+    job_title = element.find_element(By.CLASS_NAME, "mui-1oymh71").text
+    job_company = element.find_element(By.CSS_SELECTOR, '[data-testid="jobs-item-company"]').text
+    job_link = element.find_element(By.CSS_SELECTOR, 'a').get_attribute('href') 
+    try:
+        location_container = element.find_element(By.XPATH, './/div[*[@data-testid="RoomRoundedIcon"]]')
+        if location_container:
+            location_text = location_container.get_attribute('textContent').strip()
+            if location_text:
+                job_location = location_text
+            else:
+                job_location = "Algeria"
+    except Exception as loc_e:
+        job_location = "Algeria"
+    return job_title,job_company,job_link,job_location
                     
