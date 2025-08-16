@@ -32,23 +32,11 @@ def scrape_emploitic(route: str):
     time.sleep(3)
     jobs = []
     try:
-        wait = WebDriverWait(driver, 10)
-        wait.until(EC.presence_of_element_located((By.TAG_NAME, "head")))
-        
-        titles = driver.find_elements(By.CLASS_NAME, "mui-1oymh71")
-        locations = driver.find_elements(By.CLASS_NAME, "mui-1lwc51h")
+        job_elements = driver.find_elements(By.CSS_SELECTOR, '[data-testid="jobs-item"]')
+        for element in job_elements:
+            job_info = element.text
+            print(job_info)
 
-        for title, location in zip(titles, locations):
-            if title and title.text.strip():
-                job = Job(
-                    title=title.text.strip(), 
-                    company="", 
-                    location=location.text.strip() if location else "", 
-                    date_posted="", 
-                    link="", 
-                    etat=""
-                )
-                jobs.append(job)
         
         return jobs
     except Exception as e:
