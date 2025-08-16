@@ -7,4 +7,4 @@ class Job:
         self.link = link
         self.etat = etat
     def show(self):
-        return f"Title: {self.title}, Company: {self.company}, Location: {self.location}, Date Posted: {self.date_posted}, Link: {self.link}, Etat: {self.etat}"
+        return f"Title: {self.title} \nCompany: {self.company} \nLocation: {self.location} \nDate Posted: {self.date_posted} \nLink: {self.link} \nEtat: {self.etat} \n ================================="
