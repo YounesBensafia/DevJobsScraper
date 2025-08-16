@@ -3,7 +3,7 @@ import os
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
-from src.scraper.scraper import main_scraper
+from scraper.scraper_remoteOK import main_scraper
 
 
 if __name__ == "__main__":
