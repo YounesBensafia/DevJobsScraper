@@ -1,5 +1,5 @@
 import time
-from scraper.scraper_remoteOK import main_scraper
+from src.scraper.scraper_remoteOK import main_scraper
 from src.scraper.cleaner import main_cleaner
 
 
