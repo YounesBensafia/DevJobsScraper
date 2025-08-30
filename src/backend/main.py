@@ -1,3 +1,4 @@
+import traceback
 from fastapi import FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
 import sqlite3
@@ -26,7 +27,8 @@ async def run_scraper_loop(interval_seconds: int = 60):
             main_cleaner()
             print("Data cleaning completed. Process finished successfully.")
         except Exception as e:
-            print(f"Error during scheduled task: {e}")
+            print(f"Error during        adsd    scheduled task: {e}")
+            traceback.print_exc()
 
         print(f"Waiting {interval_seconds} seconds...\n")
         await asyncio.sleep(interval_seconds)
