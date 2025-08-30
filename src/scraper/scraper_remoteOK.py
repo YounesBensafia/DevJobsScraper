@@ -13,11 +13,22 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(
 from src.config.config import DB_PATH
 
 
-def save_to_db(jobs: list):
+def save_to_db(jobs):
     df = pd.DataFrame(jobs)
+    
+    if df.empty or len(df.columns) == 0:
+        print("⚠️ No data scraped. Skipping database save.")
+        return
+
+    # Clean column names just in case
+    df.columns = [c.strip().replace(" ", "_").lower() or f"col_{i}" 
+                  for i, c in enumerate(df.columns)]
+
     conn = sqlite3.connect(DB_PATH)
     df.to_sql("jobs", conn, if_exists="replace", index=False)
     conn.close()
+    print("✅ Data saved to DB successfully")
+
 
 
 def driver():

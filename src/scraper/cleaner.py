@@ -91,7 +91,7 @@ def clean_jobs():
             company TEXT NOT NULL,
             time TEXT,
             tags TEXT,
-            locations TEXT,
+            location TEXT,
             link TEXT UNIQUE,
             logo TEXT,
             salary_from INTEGER,
@@ -103,8 +103,8 @@ def clean_jobs():
 
     cursor.execute(
         """
-        INSERT INTO jobs_new (id, title, company, time, tags, locations, link, logo, salary_from, salary_to, currency)
-        SELECT rowid, title, company, time, tags, locations, link, logo, salary_from, salary_to, currency
+        INSERT INTO jobs_new (id, title, company, time, tags, location, link, logo, salary_from, salary_to, currency)
+        SELECT rowid, title, company, time, tags, location, link, logo, salary_from, salary_to, currency
         FROM jobs;
     """
     )

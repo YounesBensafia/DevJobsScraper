@@ -1,4 +1,5 @@
 import time
+import traceback
 from src.scraper.scraper_remoteOK import main_scraper
 from src.scraper.cleaner import main_cleaner
 
@@ -13,6 +14,8 @@ def run_every(interval_seconds: int = 60):
             print("Data cleaning completed. Process finished successfully.")
         except Exception as e:
             print(f"Error during scheduled task: {e}")
+            traceback.print_exc()
+            
 
         print(f"Waiting {interval_seconds} seconds...\n")
         time.sleep(interval_seconds)
@@ -27,6 +30,8 @@ def run():
         print("Data cleaning completed. Process finished successfully.")
     except Exception as e:
         print(f"Error during scheduled task: {e}")
+        traceback.print_exc()
+
 
 
 if __name__ == "__main__":
