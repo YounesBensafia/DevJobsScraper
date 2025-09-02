@@ -22,9 +22,9 @@ async def send_dm(message: str):
             user = await client.fetch_user(user_id)
             if user:
                 await user.send(message)
-                print("📨 Message sent successfully")
+                print("Message sent successfully")
             else:
-                print("⚠️ User not found")
+                print("User not found")
         except Exception as e:
             print(f"Error: {e}")
 
