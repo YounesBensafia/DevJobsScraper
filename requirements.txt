@@ -6,3 +6,4 @@ pysqlite3
 pandas
 webdriver-manager
 pandas
+discord.py

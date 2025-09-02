@@ -46,7 +46,7 @@ def driver():
     service = Service(ChromeDriverManager().install())
     driver = webdriver.Chrome(service=service, options=options)
 
-    url = "https://remoteok.com/remote-dev-jobs"
+    url = "https://emploitic.com/offres-d-emploi"
     driver.get(url)
 
     time.sleep(5)
