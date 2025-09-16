@@ -1,5 +1,7 @@
 # DevJobsScraper
 
+![Status](https://img.shields.io/badge/status-under--construction-orange)
+
 <img width="1820" height="986" alt="image" src="https://github.com/user-attachments/assets/ebfa0c6d-1373-4110-9884-66ff9c31f0a7" />
 
 
