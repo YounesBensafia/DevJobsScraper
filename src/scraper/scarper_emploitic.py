@@ -41,7 +41,7 @@ if __name__ == "__main__":
     jobs = scrape_emploitic(route)
     if jobs:
         for job in jobs:
-            print(job.show())
+            # print(job.show())
             job.save_to_db(connection)
         exit()
     else:
