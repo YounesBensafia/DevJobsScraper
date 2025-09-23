@@ -18,11 +18,11 @@ chrome_options.binary_location = "/usr/bin/chromium-browser"
 
 driver = webdriver.Chrome(service=Service("/usr/bin/chromedriver"), options=chrome_options)
 
-def set_link(route: str = "/"):
+def set_link(route: str = "/") -> str:
     full_url = f"{WEBSITE_URL}{route}"
     return full_url
 
-def scrape_emploitic(route: str):
+def scrape_emploitic(route: str) -> list:
     full_url = f"{WEBSITE_URL}{route}"
     print(f"Navigating to: {full_url}")
     driver.get(full_url)
@@ -41,7 +41,6 @@ if __name__ == "__main__":
     jobs = scrape_emploitic(route)
     if jobs:
         for job in jobs:
-            # print(job.show())
             job.save_to_db(connection)
         exit()
     else:

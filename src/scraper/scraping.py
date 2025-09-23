@@ -12,7 +12,7 @@ def scrape_jobs(driver) -> list[Job]:
     job_elements = driver.find_elements(By.CSS_SELECTOR, '[data-testid="jobs-item"]')
     jobs = []
 
-    for i, element in enumerate(job_elements):
+    for _, element in enumerate(job_elements):
             job_title, job_company, job_link, job_location = extract_job_details(element)
 
             job_date_posted = extract_job_date_posted(element)
@@ -45,10 +45,10 @@ def extract_job_date_posted(element):
 def extract_job_details(element):
     job_title, job_company, job_link = extract_job_info(element) 
     try:
-        retrieve_location_info(element)
+        job_location = retrieve_location_info(element)
     except Exception as loc_e:
         job_location = "Algeria"
-    return job_title,job_company,job_link,job_location
+    return job_title, job_company, job_link, job_location
 
 def retrieve_location_info(element):
     location_container = element.find_element(By.XPATH, './/div[*[@data-testid="RoomRoundedIcon"]]')
