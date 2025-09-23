@@ -6,5 +6,6 @@ from src.scraper.scarper_emploitic import scrape_emploitic
 
 if __name__ == "__main__":
     jobs = scrape_emploitic(route="?search=developer")
-    print(jobs[0].show())
+    for job in jobs:
+        print(job.show())
     print("Scraping completed and data saved to database.")

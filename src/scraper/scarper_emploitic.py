@@ -26,7 +26,6 @@ def scrape_emploitic(route: str) -> list:
     full_url = f"{WEBSITE_URL}{route}"
     print(f"Navigating to: {full_url}")
     driver.get(full_url)
-    
     time.sleep(3)
     return(scrape_jobs(driver))
 

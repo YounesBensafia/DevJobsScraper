@@ -14,7 +14,6 @@ def scrape_jobs(driver) -> list[Job]:
 
     for _, element in enumerate(job_elements):
             job_title, job_company, job_link, job_location = extract_job_details(element)
-
             job_date_posted = extract_job_date_posted(element)
             job =Job(
                 title=job_title,
@@ -46,6 +45,8 @@ def extract_job_details(element):
     job_title, job_company, job_link = extract_job_info(element) 
     try:
         job_location = retrieve_location_info(element)
+        if not job_location:
+            job_location = "Algeria"
     except Exception as loc_e:
         job_location = "Algeria"
     return job_title, job_company, job_link, job_location

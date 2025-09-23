@@ -1,7 +1,0 @@
-fastapi
-selenium
-uvicorn
-requests
-webdriver_manager
-pysqlite3
-pandas
