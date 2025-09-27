@@ -9,7 +9,7 @@ import os
 import asyncio
 from dotenv import load_dotenv
 from contextlib import asynccontextmanager
-from scraper.scraper_remoteOK import main_scraper
+from scraper.scraper_remoteok import main_scraper
 from src.scraper.cleaner import main_cleaner
 from pathlib import Path
 

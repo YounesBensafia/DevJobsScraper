@@ -1,11 +1,4 @@
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.chrome.options import Options
-from config.config import WEBSITE_URL
-import time
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 from src.scraper.job import Job
 
 def scrape_jobs(driver) -> list[Job]:
