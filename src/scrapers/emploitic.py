@@ -44,7 +44,7 @@ class EmploiticScraper(BaseScraper):
         for element in job_elements:
             try:
                 try:
-                    title = element.find_element(By.CLASS_NAME, "mui-1oymh71").text
+                    title = element.find_element(By.TAG_NAME, "h2").text
                 except Exception:
                     title = "N/A"
 
