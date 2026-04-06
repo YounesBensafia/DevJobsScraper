@@ -12,6 +12,9 @@ dependencies = [
     "selenium>=4.35.0",
     "uvicorn>=0.36.0",
     "webdriver-manager>=4.0.2",
+    "pytest>=8.0.0",
+    "pytest-mock>=3.12.0",
+    "httpx>=0.27.0",
 ]
 
 [tool.uv]
