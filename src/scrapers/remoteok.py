@@ -1,14 +1,16 @@
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.by import By
 import time
 from typing import List
+
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
+from webdriver_manager.chrome import ChromeDriverManager
 
 from src.core.models import Job
 from src.scrapers.base import BaseScraper
 from src.utils.cleaner import extract_salary_parts
+
 
 class RemoteOKScraper(BaseScraper):
     def __init__(self):
@@ -25,7 +27,7 @@ class RemoteOKScraper(BaseScraper):
         options.add_argument("--disable-dev-shm-usage")
         options.add_argument("--window-size=1920,1080")
         options.add_argument("--remote-allow-origins=*")
-        
+
         service = Service(ChromeDriverManager().install())
         driver = webdriver.Chrome(service=service, options=options)
         return driver
@@ -47,7 +49,7 @@ class RemoteOKScraper(BaseScraper):
                         By.CSS_SELECTOR, "h2[itemprop='title']"
                     )
                     title = title_element.text.strip()
-                except:
+                except Exception:
                     title = job_element.text.strip()
 
                 if not title:
@@ -56,7 +58,7 @@ class RemoteOKScraper(BaseScraper):
                 try:
                     time_element = job_element.find_element(By.CSS_SELECTOR, "td.time")
                     posted = time_element.text.strip()
-                except:
+                except Exception:
                     posted = "N/A"
 
                 try:
@@ -64,7 +66,7 @@ class RemoteOKScraper(BaseScraper):
                         By.CSS_SELECTOR, "h3[itemprop='name']"
                     )
                     company = company_element.text.strip()
-                except:
+                except Exception:
                     company = "N/A"
 
                 tags = []
@@ -73,7 +75,7 @@ class RemoteOKScraper(BaseScraper):
                     for div in tags_divs:
                         h3s = div.find_elements(By.TAG_NAME, "h3")
                         tags.extend([h3.text.strip() for h3 in h3s if h3.text.strip()])
-                except:
+                except Exception:
                     print("Error extracting tags for job:", title)
 
                 salary_raw = "Not mentioned"
@@ -86,13 +88,13 @@ class RemoteOKScraper(BaseScraper):
                             salary_raw = content
                         else:
                             locations_list.append(content)
-                except:
+                except Exception:
                     print("Error extracting locations for job:", title)
 
                 try:
                     link_element = job_element.find_element(By.CSS_SELECTOR, ".preventLink")
                     link = link_element.get_attribute("href").strip()
-                except:
+                except Exception:
                     print("Error extracting link for job:", title)
                     continue
 
@@ -101,29 +103,32 @@ class RemoteOKScraper(BaseScraper):
                     logo = logo_element.get_attribute("data-src")
                     if logo and logo.startswith("/"):
                         logo = "https://remoteok.com" + logo
-                except:
+                except Exception:
                     logo = None
 
                 salary_from, salary_to, currency = extract_salary_parts(salary_raw)
 
-                jobs.append(Job(
-                    title=title,
-                    company=company,
-                    link=link,
-                    time=posted,
-                    tags=", ".join(tags) if tags else "not mentioned",
-                    locations=", ".join(locations_list) if locations_list else "Not mentioned",
-                    logo=logo,
-                    salary_from=salary_from,
-                    salary_to=salary_to,
-                    currency=currency
-                ))
+                jobs.append(
+                    Job(
+                        title=title,
+                        company=company,
+                        link=link,
+                        time=posted,
+                        tags=", ".join(tags) if tags else "not mentioned",
+                        locations=", ".join(locations_list) if locations_list else "Not mentioned",
+                        logo=logo,
+                        salary_from=salary_from,
+                        salary_to=salary_to,
+                        currency=currency,
+                    )
+                )
 
             except Exception as e:
                 print(f"Error processing a job element: {e}")
 
         driver.quit()
         return jobs
+
 
 if __name__ == "__main__":
     scraper = RemoteOKScraper()

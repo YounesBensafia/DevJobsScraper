@@ -1,10 +1,8 @@
-from .remoteok import RemoteOKScraper
 from .emploitic import EmploiticScraper
+from .remoteok import RemoteOKScraper
 
-SCRAPERS = {
-    "remoteok": RemoteOKScraper,
-    "emploitic": EmploiticScraper
-}
+SCRAPERS = {"remoteok": RemoteOKScraper, "emploitic": EmploiticScraper}
+
 
 def get_scraper(name):
 

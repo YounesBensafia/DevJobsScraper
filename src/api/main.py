@@ -1,8 +1,9 @@
-from fastapi import FastAPI, Query
-from fastapi.middleware.cors import CORSMiddleware
 import asyncio
 import logging
 from contextlib import asynccontextmanager
+
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from src.core.config import ALLOWED_ORIGINS
 from src.core.database import get_db_connection, init_db
@@ -11,6 +12,7 @@ from src.utils.cleaner import main_cleaner
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
 
 async def run_scraper_service():
     while True:
@@ -22,7 +24,7 @@ async def run_scraper_service():
                 scraper.run()
             except Exception as e:
                 logger.error(f"Error running {name} scraper: {e}")
-        
+
         logger.info("Cycle completed. Cleaning data...")
         try:
             main_cleaner()
@@ -31,6 +33,7 @@ async def run_scraper_service():
 
         logger.info("Cycle finished. Next run in 60 seconds.")
         await asyncio.sleep(60)
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -43,6 +46,7 @@ async def lifespan(app: FastAPI):
     except asyncio.CancelledError:
         logger.info("Scraper background service stopped.")
 
+
 app = FastAPI(title="DevJobsScraper API", lifespan=lifespan)
 
 app.add_middleware(
@@ -52,6 +56,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 @app.get("/")
 def get_jobs():
@@ -64,6 +69,8 @@ def get_jobs():
     finally:
         conn.close()
 
+
 if __name__ == "__main__":
     import uvicorn
+
     uvicorn.run(app, host="0.0.0.0", port=8000)

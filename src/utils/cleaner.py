@@ -1,6 +1,7 @@
-import sqlite3
 import re
+
 from src.core.database import get_db_connection
+
 
 def normalize_tags(tags):
 
@@ -32,7 +33,7 @@ def clean_jobs():
 
     conn = get_db_connection()
     cursor = conn.cursor()
-    
+
     cursor.execute("SELECT id, tags FROM jobs")
     for row_id, tags in cursor.fetchall():
         if tags:
@@ -46,8 +47,10 @@ def clean_jobs():
     conn.close()
     print("✅ Jobs cleaned successfully.")
 
+
 def main_cleaner():
     clean_jobs()
+
 
 if __name__ == "__main__":
     main_cleaner()

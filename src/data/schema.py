@@ -1,5 +1,7 @@
-import sqlite3
 import os
+import sqlite3
+
+
 def create_db():
     db_dir = os.path.dirname("./jobs.db")
     if db_dir and not os.path.exists(db_dir):
@@ -17,9 +19,11 @@ def create_db():
             etat TEXT NOT NULL
         )
     """)
-    
+
     conn.commit()
     conn.close()
     print("Database and table 'jobs' created successfully.")
+
+
 if __name__ == "__main__":
     create_db()

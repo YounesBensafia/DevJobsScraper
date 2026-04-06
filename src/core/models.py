@@ -1,5 +1,6 @@
-from dataclasses import dataclass, asdict
+from dataclasses import asdict, dataclass
 from typing import Optional
+
 
 @dataclass
 class Job:
@@ -21,11 +22,22 @@ class Job:
     def save_to_db(self, conn):
 
         cursor = conn.cursor()
-        cursor.execute('''
+        cursor.execute(
+            """
             INSERT OR IGNORE INTO jobs (title, company, time, tags, locations, link, logo, salary_from, salary_to, currency)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        ''', (
-            self.title, self.company, self.time, self.tags, self.locations,
-            self.link, self.logo, self.salary_from, self.salary_to, self.currency
-        ))
+        """,
+            (
+                self.title,
+                self.company,
+                self.time,
+                self.tags,
+                self.locations,
+                self.link,
+                self.logo,
+                self.salary_from,
+                self.salary_to,
+                self.currency,
+            ),
+        )
         conn.commit()

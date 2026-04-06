@@ -1,7 +1,9 @@
 from abc import ABC, abstractmethod
 from typing import List
-from src.core.models import Job
+
 from src.core.database import get_db_connection
+from src.core.models import Job
+
 
 class BaseScraper(ABC):
     @abstractmethod
