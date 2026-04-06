@@ -308,12 +308,6 @@ wheels = [
 ]
 
 [[package]]
-name = "pysqlite3"
-version = "0.5.4"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/33/cb/ef7d041dbecfbf47f9241d7cb6328311fd80fe15bd61a6253d9ab36e9d6d/pysqlite3-0.5.4.tar.gz", hash = "sha256:fbc69bfdc0cb43a5badd5403b126d5151371b5037e0397ba9802bb440c5b0021", size = 40743, upload-time = "2024-10-12T12:11:55.537Z" }
-
-[[package]]
 name = "python-dateutil"
 version = "2.9.0.post0"
 source = { registry = "https://pypi.org/simple" }
@@ -361,11 +355,11 @@ wheels = [
 [[package]]
 name = "scrapeemploitic"
 version = "0.1.0"
-source = { virtual = "." }
+source = { editable = "." }
 dependencies = [
     { name = "fastapi" },
     { name = "pandas" },
-    { name = "pysqlite3" },
+    { name = "python-dotenv" },
     { name = "requests" },
     { name = "selenium" },
     { name = "uvicorn" },
@@ -376,7 +370,7 @@ dependencies = [
 requires-dist = [
     { name = "fastapi", specifier = ">=0.117.1" },
     { name = "pandas", specifier = ">=2.3.2" },
-    { name = "pysqlite3", specifier = ">=0.5.4" },
+    { name = "python-dotenv", specifier = ">=1.0.1" },
     { name = "requests", specifier = ">=2.32.5" },
     { name = "selenium", specifier = ">=4.35.0" },
     { name = "uvicorn", specifier = ">=0.36.0" },
