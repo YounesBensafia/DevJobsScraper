@@ -44,16 +44,15 @@ class EmploiticScraper(BaseScraper):
         for element in job_elements:
             try:
                 try:
-                    title = element.find_element(By.TAG_NAME, "h2").text
+                    title = element.find_element(By.CSS_SELECTOR, "h2").text
                 except Exception:
                     title = "N/A"
 
                 try:
-                    company = element.find_element(
-                        By.CSS_SELECTOR, '[data-testid="jobs-item-company"]'
-                    ).text
+                    company = element.find_element(By.CSS_SELECTOR, "p").text
                 except Exception:
                     company = "N/A"
+
 
                 try:
                     link = element.find_element(By.CSS_SELECTOR, "a").get_attribute("href")
