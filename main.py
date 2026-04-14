@@ -1,34 +1,44 @@
-import time
-from src.scraper.scraper_remoteok import main_scraper
-from src.scraper.cleaner import main_cleaner
+import argparse
+
+import uvicorn
+
+from src.scrapers import SCRAPERS
+from src.utils.cleaner import main_cleaner
 
 
-def run_every(interval_seconds: int = 60):
-    while True:
-        print("Starting the job scraping process...")
+def run_api():
+    print("🚀 Starting API...")
+    uvicorn.run("src.api.main:app", host="0.0.0.0", port=8000, reload=True)
+
+
+def run_scrapers():
+    print("🔍 Starting Scrapers...")
+    for name, scraper_class in SCRAPERS.items():
         try:
-            main_scraper()
-            print("Job scraping completed. Now cleaning the data...")
-            main_cleaner()
-            print("Data cleaning completed. Process finished successfully.")
+            print(f"Running {name}...")
+            scraper = scraper_class()
+            scraper.run()
         except Exception as e:
-            print(f"Error during scheduled task: {e}")
+            print(f"❌ Error running {name} scraper: {e}")
 
-        print(f"Waiting {interval_seconds} seconds...\n")
-        time.sleep(interval_seconds)
-
-
-def run():
-    print("Starting the job scraping process...")
-    try:
-        main_scraper()
-        print("Job scraping completed. Now cleaning the data...")
-        main_cleaner()
-        print("Data cleaning completed. Process finished successfully.")
-    except Exception as e:
-        print(f"Error during scheduled task: {e}")
+    print("🧹 Cleaning data...")
+    main_cleaner()
+    print("✅ Done.")
 
 
 if __name__ == "__main__":
-    # run_every(60 * 1)
-    run()
+    parser = argparse.ArgumentParser(description="DevJobsScraper Entry Point")
+    parser.add_argument(
+        "mode",
+        choices=["api", "scraper"],
+        nargs="?",
+        default="api",
+        help="Mode to run: api (default) or scraper",
+    )
+
+    args = parser.parse_args()
+
+    if args.mode == "api":
+        run_api()
+    elif args.mode == "scraper":
+        run_scrapers()
