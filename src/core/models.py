@@ -40,4 +40,3 @@ class Job:
                 self.currency,
             ),
         )
-        conn.commit()

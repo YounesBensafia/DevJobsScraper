@@ -33,6 +33,7 @@ def test_job_save_to_db():
 
     job = Job(title="SQL Dev", company="DB Inc", link="http://db.com")
     job.save_to_db(conn)
+    conn.commit()
 
     cursor.execute("SELECT title, company FROM jobs")
     row = cursor.fetchone()

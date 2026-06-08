@@ -13,10 +13,10 @@ def test_read_main(mocker):
     cursor = mock_conn.cursor()
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS jobs (
-            id: INTEGER PRIMARY KEY,
-            title: TEXT,
-            company: TEXT,
-            time: TEXT,
+            id INTEGER PRIMARY KEY,
+            title TEXT,
+            company TEXT,
+            time TEXT,
             tags TEXT,
             locations TEXT,
             link TEXT,
@@ -34,9 +34,12 @@ def test_read_main(mocker):
 
     mocker.patch("src.api.main.get_db_connection", return_value=mock_conn)
 
-    response = client.get("/")
+    response = client.get("/jobs")
     assert response.status_code == 200
-    data = response.json()
-    assert len(data) == 1
-    assert data[0]["title"] == "Tester"
-    assert data[0]["company"] == "QA Inc"
+    body = response.json()
+    assert body["total"] == 1
+    assert body["page"] == 1
+    assert body["pages"] == 1
+    assert len(body["data"]) == 1
+    assert body["data"][0]["title"] == "Tester"
+    assert body["data"][0]["company"] == "QA Inc"

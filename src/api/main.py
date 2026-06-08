@@ -1,8 +1,9 @@
 import asyncio
 import logging
+import math
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
 
 from src.core.config import ALLOWED_ORIGINS
@@ -23,7 +24,7 @@ async def run_scraper_service():
                 scraper = scraper_class()
                 scraper.run()
             except Exception as e:
-                logger.error(f"Error running {name} scraper: {e}")
+                logger.error(f"Scraper {name} failed: {e}")
 
         logger.info("Cycle completed. Cleaning data...")
         try:
@@ -31,8 +32,8 @@ async def run_scraper_service():
         except Exception as e:
             logger.error(f"Error during data cleaning: {e}")
 
-        logger.info("Cycle finished. Next run in 60 seconds.")
-        await asyncio.sleep(60)
+        logger.info("Cycle finished. Next run in 30 minutes.")
+        await asyncio.sleep(1800)
 
 
 @asynccontextmanager
@@ -58,14 +59,24 @@ app.add_middleware(
 )
 
 
-@app.get("/")
-def get_jobs():
+@app.get("/jobs")
+def get_jobs(page: int = Query(1, ge=1), limit: int = Query(20, ge=1, le=100)):
     conn = get_db_connection()
     try:
         cursor = conn.cursor()
-        cursor.execute("SELECT * FROM jobs ORDER BY id DESC")
+        cursor.execute("SELECT COUNT(*) FROM jobs")
+        total = cursor.fetchone()[0]
+
+        offset = (page - 1) * limit
+        cursor.execute("SELECT * FROM jobs ORDER BY id DESC LIMIT ? OFFSET ?", (limit, offset))
         rows = cursor.fetchall()
-        return [dict(row) for row in rows]
+
+        return {
+            "data": [dict(row) for row in rows],
+            "total": total,
+            "page": page,
+            "pages": math.ceil(total / limit) if total > 0 else 0,
+        }
     finally:
         conn.close()
 
