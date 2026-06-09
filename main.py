@@ -1,32 +1,29 @@
 import argparse
-import logging
 
 import uvicorn
 
 from src.scrapers import SCRAPERS
 from src.utils.cleaner import main_cleaner
 
-logger = logging.getLogger(__name__)
-
 
 def run_api():
-    logger.info("Starting API...")
+    print("🚀 Starting API...")
     uvicorn.run("src.api.main:app", host="0.0.0.0", port=8000, reload=True)
 
 
 def run_scrapers():
-    logger.info("Starting scrapers...")
+    print("🔍 Starting Scrapers...")
     for name, scraper_class in SCRAPERS.items():
         try:
-            logger.info("Running %s...", name)
+            print(f"Running {name}...")
             scraper = scraper_class()
             scraper.run()
         except Exception as e:
-            logger.error("Error running %s scraper: %s", name, e)
+            print(f"❌ Error running {name} scraper: {e}")
 
-    logger.info("Cleaning data...")
+    print("🧹 Cleaning data...")
     main_cleaner()
-    logger.info("Done.")
+    print("✅ Done.")
 
 
 if __name__ == "__main__":

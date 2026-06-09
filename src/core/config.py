@@ -9,5 +9,7 @@ env_path = PROJECT_ROOT / ".env"
 load_dotenv(dotenv_path=env_path)
 
 DB_PATH = PROJECT_ROOT / os.getenv("DB_PATH", "src/data/jobs.db")
-EMPLOITIC_URL = os.getenv("EMPLOITIC_URL", "https://emploitic.com/offres-d-emploi")
+
+WEBSITE_URL = os.getenv("WEBSITE_URL", "https://emploitic.com/offres-d-emploi")
+
 ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS", "*").split(",")

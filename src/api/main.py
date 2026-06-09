@@ -1,9 +1,8 @@
 import asyncio
 import logging
-import math
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI, Query
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from src.core.config import ALLOWED_ORIGINS
@@ -20,20 +19,20 @@ async def run_scraper_service():
         logger.info("--- Starting Scraping Cycle ---")
         for name, scraper_class in SCRAPERS.items():
             try:
-                logger.info("Running %s scraper...", name)
+                logger.info(f"Running {name} scraper...")
                 scraper = scraper_class()
                 scraper.run()
             except Exception as e:
-                logger.error("Scraper %s failed: %s", name, e)
+                logger.error(f"Error running {name} scraper: {e}")
 
         logger.info("Cycle completed. Cleaning data...")
         try:
             main_cleaner()
         except Exception as e:
-            logger.error("Error during data cleaning: %s", e)
+            logger.error(f"Error during data cleaning: {e}")
 
-        logger.info("Cycle finished. Next run in 30 minutes.")
-        await asyncio.sleep(1800)
+        logger.info("Cycle finished. Next run in 60 seconds.")
+        await asyncio.sleep(60)
 
 
 @asynccontextmanager
@@ -59,54 +58,14 @@ app.add_middleware(
 )
 
 
-@app.get("/jobs")
-def get_jobs(
-    page: int = Query(1, ge=1),
-    limit: int = Query(20, ge=1, le=100),
-    tag: str | None = Query(None),
-    location: str | None = Query(None),
-    salary_min: int | None = Query(None, ge=0),
-    salary_max: int | None = Query(None, ge=0),
-):
+@app.get("/")
+def get_jobs():
     conn = get_db_connection()
     try:
         cursor = conn.cursor()
-        conditions = []
-        params = []
-
-        if tag:
-            conditions.append("tags LIKE ?")
-            params.append(f"%{tag}%")
-        if location:
-            conditions.append("locations LIKE ?")
-            params.append(f"%{location}%")
-        if salary_min is not None:
-            conditions.append("COALESCE(salary_to, salary_from, 0) >= ?")
-            params.append(salary_min)
-        if salary_max is not None:
-            conditions.append("COALESCE(salary_from, salary_to, 0) <= ?")
-            params.append(salary_max)
-
-        where = ""
-        if conditions:
-            where = " WHERE " + " AND ".join(conditions)
-
-        cursor.execute(f"SELECT COUNT(*) FROM jobs{where}", params)
-        total = cursor.fetchone()[0]
-
-        offset = (page - 1) * limit
-        cursor.execute(
-            f"SELECT * FROM jobs{where} ORDER BY id DESC LIMIT ? OFFSET ?",
-            (*params, limit, offset),
-        )
+        cursor.execute("SELECT * FROM jobs ORDER BY id DESC")
         rows = cursor.fetchall()
-
-        return {
-            "data": [dict(row) for row in rows],
-            "total": total,
-            "page": page,
-            "pages": math.ceil(total / limit) if total > 0 else 0,
-        }
+        return [dict(row) for row in rows]
     finally:
         conn.close()
 

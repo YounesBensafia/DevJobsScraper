@@ -4,12 +4,13 @@ from .config import DB_PATH
 
 
 def get_db_connection():
-    conn = sqlite3.connect(DB_PATH, timeout=30, check_same_thread=False)
+    conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     return conn
 
 
 def init_db():
+    """Initializes the database with the required schema."""
     conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute("""
