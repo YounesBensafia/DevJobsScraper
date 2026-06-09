@@ -9,7 +9,7 @@ from selenium.webdriver.support import expected_conditions as EC  # noqa: N812
 from selenium.webdriver.support.ui import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
 
-from src.core.config import WEBSITE_URL
+from src.core.config import EMPLOITIC_URL
 from src.core.models import Job
 from src.scrapers.base import BaseScraper
 
@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 
 class EmploiticScraper(BaseScraper):
     def __init__(self):
-        self.base_url = WEBSITE_URL
+        self.base_url = EMPLOITIC_URL
         self.route = "?search=developer"
         self._driver_path = ChromeDriverManager().install()
 
