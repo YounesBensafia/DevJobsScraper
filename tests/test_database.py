@@ -5,7 +5,6 @@ from src.core.database import get_db_connection, init_db
 
 
 def test_init_db(mocker):
-    # Mock DB_PATH to a temporary test database
     temp_db = "temp_test_jobs.db"
     mocker.patch("src.core.database.DB_PATH", temp_db)
 
@@ -18,7 +17,9 @@ def test_init_db(mocker):
 
         conn = sqlite3.connect(temp_db)
         cursor = conn.cursor()
-        cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='jobs'")
+        cursor.execute(
+            "SELECT name FROM sqlite_master WHERE type='table' AND name='jobs'"
+        )
         assert cursor.fetchone() is not None
         conn.close()
     finally:

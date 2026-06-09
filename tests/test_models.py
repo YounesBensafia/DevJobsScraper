@@ -4,7 +4,11 @@ from src.core.models import Job
 
 
 def test_job_initialization():
-    job = Job(title="Senior Developer", company="Tech Corp", link="https://techcorp.com/jobs/1")
+    job = Job(
+        title="Senior Developer",
+        company="Tech Corp",
+        link="https://techcorp.com/jobs/1",
+    )
     assert job.title == "Senior Developer"
     assert job.company == "Tech Corp"
     assert job.link == "https://techcorp.com/jobs/1"
@@ -33,6 +37,7 @@ def test_job_save_to_db():
 
     job = Job(title="SQL Dev", company="DB Inc", link="http://db.com")
     job.save_to_db(conn)
+    conn.commit()
 
     cursor.execute("SELECT title, company FROM jobs")
     row = cursor.fetchone()
