@@ -1,17 +1,18 @@
+import logging
 import re
 
 from src.core.database import get_db_connection
 
+logger = logging.getLogger(__name__)
+
 
 def normalize_tags(tags):
-
     if not tags:
         return "not mentioned"
     return ", ".join(tag.strip() for tag in tags.split(","))
 
 
 def extract_salary_parts(raw_salary):
-
     if not raw_salary or "negotiable" in raw_salary.lower():
         return None, None, None
 
@@ -30,7 +31,6 @@ def extract_salary_parts(raw_salary):
 
 
 def clean_jobs():
-
     conn = get_db_connection()
     cursor = conn.cursor()
 
@@ -38,19 +38,17 @@ def clean_jobs():
     for row_id, tags in cursor.fetchall():
         if tags:
             cleaned_tags = normalize_tags(tags)
-            cursor.execute("UPDATE jobs SET tags = ? WHERE id = ?", (cleaned_tags, row_id))
+            cursor.execute(
+                "UPDATE jobs SET tags = ? WHERE id = ?", (cleaned_tags, row_id)
+            )
 
-    print("Filtering old jobs...")
+    logger.info("Filtering old jobs...")
     cursor.execute("DELETE FROM jobs WHERE time LIKE '%1yr%'")
 
     conn.commit()
     conn.close()
-    print("✅ Jobs cleaned successfully.")
+    logger.info("Jobs cleaned successfully.")
 
 
 def main_cleaner():
     clean_jobs()
-
-
-if __name__ == "__main__":
-    main_cleaner()

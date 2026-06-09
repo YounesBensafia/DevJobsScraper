@@ -1,5 +1,8 @@
+import logging
 import os
 import sqlite3
+
+logger = logging.getLogger(__name__)
 
 
 def create_db():
@@ -19,11 +22,6 @@ def create_db():
             etat TEXT NOT NULL
         )
     """)
-
     conn.commit()
     conn.close()
-    print("Database and table 'jobs' created successfully.")
-
-
-if __name__ == "__main__":
-    create_db()
+    logger.info("Database and table 'jobs' created successfully.")

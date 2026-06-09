@@ -4,7 +4,11 @@ from src.core.models import Job
 
 
 def test_job_initialization():
-    job = Job(title="Senior Developer", company="Tech Corp", link="https://techcorp.com/jobs/1")
+    job = Job(
+        title="Senior Developer",
+        company="Tech Corp",
+        link="https://techcorp.com/jobs/1",
+    )
     assert job.title == "Senior Developer"
     assert job.company == "Tech Corp"
     assert job.link == "https://techcorp.com/jobs/1"

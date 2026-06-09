@@ -20,17 +20,17 @@ async def run_scraper_service():
         logger.info("--- Starting Scraping Cycle ---")
         for name, scraper_class in SCRAPERS.items():
             try:
-                logger.info(f"Running {name} scraper...")
+                logger.info("Running %s scraper...", name)
                 scraper = scraper_class()
                 scraper.run()
             except Exception as e:
-                logger.error(f"Scraper {name} failed: {e}")
+                logger.error("Scraper %s failed: %s", name, e)
 
         logger.info("Cycle completed. Cleaning data...")
         try:
             main_cleaner()
         except Exception as e:
-            logger.error(f"Error during data cleaning: {e}")
+            logger.error("Error during data cleaning: %s", e)
 
         logger.info("Cycle finished. Next run in 30 minutes.")
         await asyncio.sleep(1800)
@@ -68,7 +68,9 @@ def get_jobs(page: int = Query(1, ge=1), limit: int = Query(20, ge=1, le=100)):
         total = cursor.fetchone()[0]
 
         offset = (page - 1) * limit
-        cursor.execute("SELECT * FROM jobs ORDER BY id DESC LIMIT ? OFFSET ?", (limit, offset))
+        cursor.execute(
+            "SELECT * FROM jobs ORDER BY id DESC LIMIT ? OFFSET ?", (limit, offset)
+        )
         rows = cursor.fetchall()
 
         return {

@@ -10,7 +10,6 @@ def get_db_connection():
 
 
 def init_db():
-    """Initializes the database with the required schema."""
     conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute("""

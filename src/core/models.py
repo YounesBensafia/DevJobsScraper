@@ -16,15 +16,15 @@ class Job:
     currency: Optional[str] = None
 
     def to_dict(self):
-
         return asdict(self)
 
     def save_to_db(self, conn):
-
         cursor = conn.cursor()
         cursor.execute(
             """
-            INSERT OR IGNORE INTO jobs (title, company, time, tags, locations, link, logo, salary_from, salary_to, currency)
+            INSERT OR IGNORE INTO jobs
+                (title, company, time, tags, locations, link, logo,
+                 salary_from, salary_to, currency)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """,
             (

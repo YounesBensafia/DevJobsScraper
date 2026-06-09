@@ -11,11 +11,9 @@ logger = logging.getLogger(__name__)
 class BaseScraper(ABC):
     @abstractmethod
     def scrape(self) -> List[Job]:
-
         pass
 
     def run(self) -> int:
-
         logger.info("Starting %s...", self.__class__.__name__)
         jobs = self.scrape()
         if not jobs:
